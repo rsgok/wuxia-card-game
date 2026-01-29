@@ -1,0 +1,15 @@
+{
+  "name": "wuxia-card-game",
+  "version": "1.0.0",
+  "description": "一个基于网页的 Roguelike 卡牌对战游戏，灵感来自 Slay the Spire。",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "puppeteer": "^24.36.1"
+  }
+}
