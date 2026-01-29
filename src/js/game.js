@@ -9,11 +9,16 @@ class Game {
         this.mapGenerator = new MapGenerator();
         this.shopSystem = null;
         this.eventSystem = null;
+        this.saveSystem = new SaveSystem();
         
         // 游戏状态
         this.state = 'menu'; // menu, map, battle, shop, event, rest, victory, defeat
         this.layer = 1;
         this.currentNode = null;
+        
+        // 自动保存间隔（毫秒）
+        this.autoSaveInterval = 60000;
+        this.autoSaveTimer = null;
         
         // 初始化显示主菜单
         this.ui.renderMenu();
@@ -34,6 +39,9 @@ class Game {
         
         // 生成第一层地图
         this.mapGenerator.generateMap(1);
+        
+        // 启动自动保存
+        this.startAutoSave();
         
         // 显示地图
         this.state = 'map';
@@ -294,6 +302,9 @@ class Game {
     
     // 返回主菜单
     returnToMenu() {
+        // 停止自动保存
+        this.stopAutoSave();
+        
         this.state = 'menu';
         this.player = null;
         this.enemy = null;
@@ -304,6 +315,129 @@ class Game {
         this.layer = 1;
         this.currentNode = null;
         this.ui.renderMenu();
+    }
+    
+    // 保存游戏
+    saveGame() {
+        const result = this.saveSystem.saveGame(this);
+        if (result.success) {
+            alert(result.message);
+        } else {
+            alert(result.message);
+        }
+    }
+    
+    // 加载游戏
+    loadGame() {
+        const result = this.saveSystem.loadGame();
+        if (!result.success) {
+            alert(result.message);
+            return;
+        }
+        
+        const data = result.saveData;
+        
+        // 反序列化游戏数据
+        this.player = this.saveSystem.deserializePlayer(data.player);
+        this.deckManager = new DeckManager(this.player);
+        this.shopSystem = this.saveSystem.deserializeShop(data.shopSystem);
+        this.eventSystem = new EventSystem(this.player);
+        this.mapGenerator = this.saveSystem.deserializeMap(data.mapGenerator);
+        
+        this.layer = data.game.layer;
+        this.currentNode = data.game.currentNode;
+        this.state = data.game.state;
+        
+        // 启动自动保存
+        this.startAutoSave();
+        
+        // 根据状态显示相应界面
+        switch (this.state) {
+            case 'map':
+                this.ui.renderMap(this.mapGenerator.map, this.mapGenerator.getMapState(), this.player);
+                break;
+            case 'battle':
+                // 重新创建战斗
+                if (this.currentNode && (this.currentNode.type === MapNodes.BATTLE || 
+                    this.currentNode.type === MapNodes.ELITE || 
+                    this.currentNode.type === MapNodes.BOSS)) {
+                    this.startBattle(this.currentNode);
+                }
+                break;
+            default:
+                // 其他状态返回地图
+                this.state = 'map';
+                this.ui.renderMap(this.mapGenerator.map, this.mapGenerator.getMapState(), this.player);
+        }
+    }
+    
+    // 启动自动保存
+    startAutoSave() {
+        this.stopAutoSave();
+        this.autoSaveTimer = setInterval(() => {
+            this.saveSystem.autoSave(this);
+        }, this.autoSaveInterval);
+    }
+    
+    // 停止自动保存
+    stopAutoSave() {
+        if (this.autoSaveTimer) {
+            clearInterval(this.autoSaveTimer);
+            this.autoSaveTimer = null;
+        }
+    }
+    
+    // 检查自动存档
+    checkAutoSave() {
+        if (this.saveSystem.hasAutoSave()) {
+            return true;
+        }
+        return false;
+    }
+    
+    // 加载自动存档
+    loadAutoSave() {
+        const result = this.saveSystem.loadAutoSave();
+        if (!result.success) {
+            return false;
+        }
+        
+        const data = result.saveData;
+        
+        // 反序列化游戏数据
+        this.player = this.saveSystem.deserializePlayer(data.player);
+        this.deckManager = new DeckManager(this.player);
+        this.shopSystem = this.saveSystem.deserializeShop(data.shopSystem);
+        this.eventSystem = new EventSystem(this.player);
+        this.mapGenerator = this.saveSystem.deserializeMap(data.mapGenerator);
+        
+        this.layer = data.game.layer;
+        this.currentNode = data.game.currentNode;
+        this.state = data.game.state;
+        
+        // 启动自动保存
+        this.startAutoSave();
+        
+        // 显示地图
+        this.state = 'map';
+        this.ui.renderMap(this.mapGenerator.map, this.mapGenerator.getMapState(), this.player);
+        
+        return true;
+    }
+    
+    // 导出存档
+    exportSave() {
+        return this.saveSystem.exportSave();
+    }
+    
+    // 导入存档
+    importSave(base64Data) {
+        return this.saveSystem.importSave(base64Data);
+    }
+    
+    // 删除存档
+    deleteSave() {
+        return this.saveSystem.deleteSave();
     }
 }
 

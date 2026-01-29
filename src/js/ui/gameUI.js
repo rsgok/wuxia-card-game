@@ -6,6 +6,11 @@ class GameUI {
     
     // 渲染主菜单
     renderMenu() {
+        const saveSystem = game ? game.saveSystem : null;
+        const hasSave = saveSystem ? saveSystem.hasSave() : false;
+        const hasAutoSave = saveSystem ? saveSystem.checkAutoSave() : false;
+        const saveInfo = saveSystem ? saveSystem.getSaveInfo() : null;
+        
         this.app.innerHTML = `
             <div class="menu-screen">
                 <h1 class="game-title">江湖行</h1>
@@ -13,6 +18,24 @@ class GameUI {
                     <button class="menu-btn" onclick="game.startGame('剑客')">剑客</button>
                     <button class="menu-btn" onclick="game.startGame('拳师')">拳师</button>
                     <button class="menu-btn" onclick="game.startGame('医师')">医师</button>
+                </div>
+                <div class="menu-buttons" style="margin-top: 2rem;">
+                    ${hasSave ? `
+                        <button class="menu-btn" style="background: linear-gradient(135deg, #4169e1 0%, #1e90ff 100%);" onclick="game.loadGame()">
+                            继续游戏
+                            ${saveInfo ? `<br><small style="font-size: 0.7rem; opacity: 0.7;">
+                                ${saveInfo.characterClass} | Lv.${saveInfo.level} | 第${saveInfo.layer}层 | ${saveInfo.gold}💰
+                            </small>` : ''}
+                        </button>
+                    ` : ''}
+                    ${hasAutoSave ? `
+                        <button class="menu-btn" style="background: linear-gradient(135deg, #32cd32 0%, #228b22 100%);" onclick="game.loadAutoSave()">
+                            恢复进度
+                        </button>
+                    ` : ''}
+                    <button class="menu-btn" style="background: linear-gradient(135deg, #9932cc 0%, #8a2be2 100%);" onclick="if (confirm('确定要清空所有存档吗？')) { game.saveSystem.clearAllSaves(); game.ui.renderMenu(); }">
+                        清空存档
+                    </button>
                 </div>
                 <p style="margin-top: 2rem; color: #888;">选择你的武学门派</p>
             </div>
