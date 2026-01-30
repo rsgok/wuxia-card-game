@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部署到 Vercel - 江湖行</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            padding: 2rem;
+            line-height: 1.8;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        h1 {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #cd853f;
+            margin-bottom: 3rem;
+        }
+        
+        .step {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid #8b4513;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: linear-gradient(135deg, #8b4513 0%, #cd853f 100%);
+            border: 2px solid #ffd700;
+            color: #fff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .step h2 {
+            color: #ffd700;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+        
+        .step p {
+            margin-bottom: 1rem;
+            color: #ccc;
+        }
+        
+        .step a {
+            color: #4169e1;
+            text-decoration: underline;
+        }
+        
+        .step a:hover {
+            color: #1e90ff;
+        }
+        
+        code {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 0.3rem 0.6rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .command-box {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #4169e1;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Courier New', monospace;
+            color: #4169e1;
+        }
+        
+        .command-box pre {
+            margin: 0;
+            color: #fff;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #8b4513 0%, #cd853f 100%);
+            border: 2px solid #ffd700;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            margin: 0.5rem;
+            font-size: 1.1rem;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #4169e1 0%, #1e90ff 100%);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #32cd32 0%, #228b22 100%);
+        }
+        
+        .warning {
+            background: rgba(255, 165, 0, 0.1);
+            border-left: 4px solid #ffa500;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .success {
+            background: rgba(50, 205, 50, 0.1);
+            border-left: 4px solid #32cd32;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .info {
+            background: rgba(65, 105, 225, 0.1);
+            border-left: 4px solid #4169e1;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .numbered-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .numbered-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 2rem;
+            position: relative;
+        }
+        
+        .numbered-list li:before {
+            content: counter(item);
+            counter-increment: item;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #ffd700;
+            color: #1a1a2e;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .numbered-list {
+            counter-reset: item;
+        }
+        
+        .center {
+            text-align: center;
+        }
+        
+        .big-link {
+            font-size: 1.3rem;
+            color: #ffd700;
+            text-decoration: none;
+            display: block;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+        
+        .big-link:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: scale(1.02);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.3);
+        }
+        
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 1rem 0;
+        }
+        
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            margin: 0 0.5rem;
+        }
+        
+        .progress-step.active {
+            background: rgba(65, 105, 225, 0.3);
+            border: 1px solid #4169e1;
+        }
+        
+        .progress-step.done {
+            background: rgba(50, 205, 50, 0.3);
+            border: 1px solid #32cd32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 部署江湖行到 Vercel</h1>
+        <p class="subtitle">3 个简单步骤，5 分钟完成部署</p>
+        
+        <div class="info">
+            <p><strong>📌 准备工作：</strong></p>
+            <ul>
+                <li>✅ 已为您准备好代码</li>
+                <li>✅ 已配置 Vercel 部署文件</li>
+                <li>✅ 已设置远程仓库连接</li>
+                <li>✅ 已提交代码到本地 Git</li>
+            </ul>
+        </div>
+        
+        <div class="progress">
+            <div class="progress-step done">✅ 准备</div>
+            <div class="progress-step active">步骤 1</div>
+            <div class="progress-step">步骤 2</div>
+            <div class="progress-step">步骤 3</div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">步骤 1</div>
+            <h2>在 GitHub 创建仓库</h2>
+            <p>首先需要在 GitHub 上创建一个仓库来存储代码。</p>
+            
+            <a href="https://github.com/new" class="big-link" target="_blank">
+                🔗 点击这里创建 GitHub 仓库
+            </a>
+            
+            <ol class="numbered-list">
+                <li>仓库名称填写：<code>wuxia-card-game</code></li>
+                <li>选择 <strong>Public</strong>（公开）或 Private（私有）</li>
+                <li>勾选 "Add a README file" 可选</li>
+                <li>点击 <code>Create repository</code> 按钮</li>
+            </ol>
+            
+            <div class="warning">
+                <p>⚠️ <strong>注意：</strong>仓库名必须完全一致：<code>wuxia-card-game</code></p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">步骤 2</div>
+            <h2>推送代码到 GitHub</h2>
+            <p>现在将本地代码推送到刚创建的 GitHub 仓库。</p>
+            
+            <div class="command-box">
+                <pre>cd wuxia-card-game
+git push -u origin main</pre>
+            </div>
+            
+            <p>执行后，你会看到类似这样的输出：</p>
+            <div class="info">
+                <pre>Enumerating objects: 123, done.
+Counting objects: 100% (123/123), done.
+Delta compression using up to 8 threads
+Compressing objects: 100% (100/100), done.
+Writing objects: 100% (123/123), 75.00 KiB | 2.00 MiB/s, done.
+Total 123 (delta 45), reused 0 (delta 0), pack-reused 0
+To github.com:rsgok/wuxia-card-game.git
+   * [new branch]      main -> main</pre>
+            </div>
+            
+            <div class="success">
+                <p>✅ <strong>成功标志：</strong>看到 <code>* [new branch] main -> main</code> 表示推送成功！</p>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">步骤 3</div>
+            <h2>在 Vercel 部署</h2>
+            <p>最后一步，使用 Vercel 快速部署网站。</p>
+            
+            <a href="https://vercel.com" class="big-link" target="_blank">
+                🌐 点击这里访问 Vercel
+            </a>
+            
+            <ol class="numbered-list">
+                <li>用你的 GitHub 账号（rsgok）登录 Vercel</li>
+                <li>点击 <code>Add New Project</code> 按钮</li>
+                <li>在 "Import Git Repository" 下找到 <code>rsgok/wuxia-card-game</code></li>
+                <li>点击 <code>Import</code> 按钮</li>
+                <li>Vercel 会自动检测项目配置，点击 <code>Deploy</code></li>
+            </ol>
+            
+            <p>等待几分钟部署完成后，你会得到一个链接：</p>
+            
+            <div class="success">
+                <p style="font-size: 1.2rem; color: #ffd700;">
+                    🎉 https://wuxia-card-game.vercel.app
+                </p>
+            </div>
+            
+            <p>这就是你的游戏网址！</p>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">完成！</div>
+            <h2>🎉 开始玩游戏</h2>
+            <p class="center">
+                现在你可以：<br><br>
+                <a href="https://wuxia-card-game.vercel.app" class="btn btn-primary" target="_blank">
+                    🎮 开始游戏
+                </a>
+                <br><br>
+                分享这个链接给你的朋友！<br>
+                <code>https://wuxia-card-game.vercel.app</code>
+            </p>
+        </div>
+        
+        <div class="info">
+            <h3>💡 常见问题</h3>
+            
+            <p><strong>Q: 推送代码时提示 "remote origin already exists"？<br></strong>
+            A: 没关系，继续执行命令即可。</p>
+            
+            <p><strong>Q: Vercel 部署失败？<br></strong>
+            A: 检查 GitHub 仓库名是否为 <code>wuxia-card-game</code>。</p>
+            
+            <p><strong>Q: 如何更新游戏？<br></strong>
+            A: 修改代码后，执行 <code>git push</code>，Vercel 会自动重新部署。</p>
+        </div>
+        
+        <div class="center">
+            <p style="color: #cd853f; font-size: 1.2rem;">
+                🚀 需要帮助？告诉臣！
+            </p>
+        </div>
+    </div>
+</body>
+</html>
