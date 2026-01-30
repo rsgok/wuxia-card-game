@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>部署指南 - 江湖行</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #fff;
+            padding: 2rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #ffd700;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        h2 {
+            color: #cd853f;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+        }
+        h3 {
+            color: #4169e1;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        p {
+            margin-bottom: 1rem;
+        }
+        code {
+            background: rgba(255,255,255,0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+        pre {
+            background: rgba(0,0,0,0.3);
+            padding: 1rem;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1rem 0;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+        }
+        .step {
+            background: rgba(255,215,0,0.1);
+            border-left: 4px solid #ffd700;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: linear-gradient(135deg, #8b4513 0%, #cd853f 100%);
+            border: 2px solid #ffd700;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            margin: 0.5rem;
+            transition: all 0.3s;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+        }
+        .play-btn {
+            display: block;
+            width: 200px;
+            margin: 2rem auto;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+        .info-box {
+            background: rgba(65, 105, 225, 0.2);
+            border: 1px solid #4169e1;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .warning {
+            background: rgba(220, 20, 60, 0.2);
+            border: 1px solid #dc143c;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎮 江湖行 - 部署指南</h1>
+    
+    <div class="step">
+        <h3>方式一：立即在浏览器中玩（推荐）</h3>
+        <p>点击下面的按钮直接启动本地服务器：</p>
+        <a href="index.html" class="btn play-btn">▶️ 立即开始游戏</a>
+        <p style="text-align: center; opacity: 0.7;">在浏览器中直接打开游戏</p>
+    </div>
+    
+    <div class="step">
+        <h3>方式二：启动本地服务器</h3>
+        <p>在终端中运行以下命令：</p>
+        <pre><code>cd wuxia-card-game
+python3 -m http.server 8080</code></pre>
+        <p>然后在浏览器中访问：<code>http://localhost:8080</code></p>
+    </div>
+    
+    <div class="step">
+        <h3>方式三：部署到 Vercel（推荐）</h3>
+        
+        <div class="info-box">
+            <p><strong>为什么要部署到 Vercel？</strong></p>
+            <ul>
+                <li>✅ 全球 CDN，访问速度快</li>
+                <li>✅ 免费 100GB/月 流量</li>
+                <li>✅ 自动 HTTPS</li>
+                <li>✅ 自动部署（Git push 后自动更新）</li>
+                <li>✅ 自定义域名</li>
+            </ul>
+        </div>
+        
+        <h4>步骤 1：创建 GitHub 仓库</h4>
+        <p>1. 访问 <a href="https://github.com/new" target="_blank" style="color: #4169e1;">https://github.com/new</a></p>
+        <p>2. 创建新仓库，命名为 <code>wuxia-card-game</code></p>
+        <p>3. 选择 Public 或 Private</p>
+        <p>4. 点击"Create repository"</p>
+        
+        <h4>步骤 2：推送代码</h4>
+        <pre><code>cd wuxia-card-game
+git init
+git add .
+git commit -m "Initial commit: 江湖行 Roguelike 卡牌游戏"
+git branch -M main
+git remote add origin https://github.com/你的用户名/wuxia-card-game.git
+git push -u origin main</code></pre>
+        
+        <h4>步骤 3：部署到 Vercel</h4>
+        <p>1. 访问 <a href="https://vercel.com" target="_blank" style="color: #4169e1;">https://vercel.com</a></p>
+        <p>2. 注册或登录（可以用 GitHub 账号登录）</p>
+        <p>3. 点击"Add New Project"</p>
+        <p>4. 导入你的 GitHub 仓库</p>
+        <p>5. Vercel 会自动检测配置</p>
+        <p>6. 点击"Deploy"</p>
+        
+        <p>部署完成后，Vercel 会提供一个链接，如：<code>https://wuxia-card-game.vercel.app</code></p>
+    </div>
+    
+    <div class="step">
+        <h3>方式四：部署到 GitHub Pages（免费）</h3>
+        <p>1. 创建 GitHub 仓库（同上）</p>
+        <p>2. 推送代码（同上）</p>
+        <p>3. 访问你的 GitHub 仓库 → Settings → Pages</p>
+        <p>4. 在"Source"下选择"main"分支</p>
+        <p>5. 点击"Save"</p>
+        <p>访问链接：<code>https://你的用户名.github.io/wuxia-card-game/</code></p>
+    </div>
+    
+    <div class="warning">
+        <h3>⚠️ 注意事项</h3>
+        <ul>
+            <li>如果你没有 GitHub 账号，需要先注册一个</li>
+            <li>Vercel 和 GitHub Pages 都是完全免费的</li>
+            <li>部署后，游戏链接可以分享给任何人</li>
+            <li>每次修改代码后，推送到 GitHub 就会自动更新</li>
+        </ul>
+    </div>
+    
+    <div class="info-box">
+        <h3>💡 推荐选择</h3>
+        <ul>
+            <li><strong>Vercel</strong>：速度最快，CDN 全球覆盖，推荐使用</li>
+            <li><strong>GitHub Pages</strong>：完全免费，适合个人项目</li>
+        </ul>
+    </div>
+    
+    <h2 style="text-align: center; margin-top: 3rem;">🚀 开始部署吧！</h2>
+    
+    <p style="text-align: center; opacity: 0.7;">需要帮助？告诉臣你想用哪种方式！</p>
+</body>
+</html>
