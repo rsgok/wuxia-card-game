@@ -1,0 +1,692 @@
+/* 全局样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Microsoft YaHei', 'PingFang SC', sans-serif;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #fff;
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+#app {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* 主菜单 */
+.menu-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.game-title {
+    font-size: 4rem;
+    font-weight: bold;
+    color: #ffd700;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+    margin-bottom: 2rem;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.menu-btn {
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    background: linear-gradient(135deg, #8b4513 0%, #cd853f 100%);
+    border: 2px solid #ffd700;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.menu-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+/* 战斗界面 */
+.battle-screen {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    height: 100%;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+/* 顶部状态栏 */
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 8px;
+    border: 1px solid #8b4513;
+}
+
+.status-group {
+    display: flex;
+    gap: 2rem;
+}
+
+.status-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-label {
+    color: #cd853f;
+    font-size: 0.9rem;
+}
+
+.status-value {
+    color: #ffd700;
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+/* 战斗区域 */
+.battle-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    padding: 1rem;
+}
+
+.character {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 12px;
+    border: 2px solid #8b4513;
+    position: relative;
+}
+
+.character.player {
+    border-color: #4169e1;
+}
+
+.character.enemy {
+    border-color: #dc143c;
+}
+
+.character-name {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #ffd700;
+}
+
+.character-avatar {
+    width: 150px;
+    height: 150px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+}
+
+.hp-bar {
+    width: 100%;
+    max-width: 200px;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #8b4513;
+}
+
+.hp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #32cd32, #228b22);
+    transition: width 0.3s;
+}
+
+.hp-text {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #fff;
+}
+
+/* 意图显示 */
+.intent-display {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem 1rem;
+    background: rgba(220, 20, 60, 0.8);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* 手牌区域 */
+.hand-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+    border: 1px solid #8b4513;
+}
+
+.energy-display {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: #ffd700;
+}
+
+.hand-cards {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    min-height: 200px;
+}
+
+/* 卡牌样式 */
+.card {
+    width: 120px;
+    height: 180px;
+    background: linear-gradient(135deg, #2c3e50 0%, #1a252f 100%);
+    border: 2px solid;
+    border-radius: 10px;
+    padding: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.card.common {
+    border-color: #808080;
+}
+
+.card.rare {
+    border-color: #4169e1;
+}
+
+.card.epic {
+    border-color: #9370db;
+}
+
+.card.legendary {
+    border-color: #ffd700;
+}
+
+.card:hover {
+    transform: translateY(-20px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    z-index: 10;
+}
+
+.card-cost {
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #ffd700, #daa520);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    color: #1a1a2e;
+    font-size: 1.2rem;
+    border: 2px solid #fff;
+}
+
+.card-name {
+    text-align: center;
+    font-weight: bold;
+    margin: 0.5rem 0;
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+.card-type {
+    font-size: 0.7rem;
+    color: #cd853f;
+    text-align: center;
+}
+
+.card-effect {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.8rem;
+    color: #ddd;
+    line-height: 1.3;
+}
+
+.card.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* 动作按钮 */
+.action-buttons {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.action-btn {
+    padding: 0.8rem 2rem;
+    font-size: 1.1rem;
+    background: linear-gradient(135deg, #8b4513 0%, #cd853f 100%);
+    border: 2px solid #ffd700;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.action-btn:hover {
+    transform: scale(1.05);
+}
+
+.action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* 信息面板 */
+.info-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 2px solid #ffd700;
+    text-align: center;
+    z-index: 1000;
+}
+
+.info-panel.hidden {
+    display: none;
+}
+
+.info-panel h2 {
+    color: #ffd700;
+    margin-bottom: 1rem;
+}
+
+.info-panel p {
+    margin-bottom: 1rem;
+    color: #ddd;
+}
+
+/* 效果动画 */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.shake {
+    animation: shake 0.3s ease-in-out;
+}
+
+@keyframes damage {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; transform: scale(1.1); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+.damage {
+    animation: damage 0.3s ease-in-out;
+}
+
+/* 地图界面 */
+.map-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2rem;
+    overflow-x: auto;
+}
+
+.map-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.map-title {
+    font-size: 2rem;
+    color: #ffd700;
+    margin-bottom: 0.5rem;
+}
+
+.map-subtitle {
+    color: #cd853f;
+    font-size: 1rem;
+}
+
+.map-container {
+    flex: 1;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    padding: 2rem 0;
+    min-height: 60vh;
+}
+
+.map-column {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    min-width: 80px;
+}
+
+.map-node {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 3px solid;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.map-node:hover:not(.locked) {
+    transform: scale(1.2);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+.map-node.locked {
+    opacity: 0.3;
+    cursor: not-allowed;
+    filter: grayscale(1);
+}
+
+.map-node.battle {
+    border-color: #dc143c;
+}
+
+.map-node.elite {
+    border-color: #ffd700;
+    font-size: 2.5rem;
+}
+
+.map-node.boss {
+    border-color: #ff6600;
+    font-size: 3rem;
+}
+
+.map-node.shop {
+    border-color: #4169e1;
+}
+
+.map-node.event {
+    border-color: #9932cc;
+}
+
+.map-node.rest {
+    border-color: #32cd32;
+}
+
+.map-node.visited {
+    background: rgba(255, 215, 0, 0.3);
+}
+
+/* 商店界面 */
+.shop-screen {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2rem;
+}
+
+.shop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.shop-gold {
+    font-size: 1.5rem;
+    color: #ffd700;
+}
+
+.shop-items {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1.5rem;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.shop-item {
+    background: rgba(0, 0, 0, 0.6);
+    border: 2px solid #8b4513;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.shop-item.sold {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.shop-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.shop-item-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #fff;
+}
+
+.shop-item-price {
+    font-size: 1.2rem;
+    color: #ffd700;
+}
+
+.shop-item-content {
+    flex: 1;
+}
+
+.shop-item-description {
+    color: #ccc;
+    margin-bottom: 0.5rem;
+}
+
+.shop-item-card {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.shop-item-relic {
+    background: rgba(255, 215, 0, 0.1);
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+}
+
+.shop-item-action {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.shop-btn {
+    flex: 1;
+    padding: 0.8rem;
+    background: linear-gradient(135deg, #8b4513 0%, #cd853f 100%);
+    border: 2px solid #ffd700;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.shop-btn:hover:not(:disabled) {
+    transform: scale(1.05);
+}
+
+.shop-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 事件界面 */
+.event-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    padding: 2rem;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.event-card {
+    background: rgba(0, 0, 0, 0.9);
+    border: 2px solid #9932cc;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 600px;
+    width: 100%;
+}
+
+.event-title {
+    font-size: 2rem;
+    color: #ffd700;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.event-description {
+    font-size: 1.1rem;
+    color: #ddd;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.event-choices {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.event-choice {
+    padding: 1rem 2rem;
+    background: linear-gradient(135deg, #8b4513 0%, #cd853f 100%);
+    border: 2px solid #ffd700;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.event-choice:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+/* 奖励面板 */
+.reward-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.9);
+    padding: 2rem;
+    border-radius: 12px;
+    border: 2px solid #ffd700;
+    text-align: center;
+    z-index: 1000;
+}
+
+.reward-panel.hidden {
+    display: none;
+}
+
+.reward-cards {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-bottom: 2rem;
+}
+
+.reward-cards .card {
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.reward-cards .card:hover {
+    transform: scale(1.1);
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .battle-area {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .card {
+        width: 100px;
+        height: 150px;
+    }
+
+    .game-title {
+        font-size: 2.5rem;
+    }
+
+    .map-container {
+        overflow-x: auto;
+        justify-content: flex-start;
+    }
+
+    .shop-items {
+        grid-template-columns: 1fr;
+    }
+}
